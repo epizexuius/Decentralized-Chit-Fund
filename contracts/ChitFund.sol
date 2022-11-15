@@ -16,6 +16,15 @@ contract ChitFundManager {
     //Mappings
     IterableMapping.Map private map;
 
+    //Enumerators
+    enum FundPhase {
+        entry,
+        acceptingMonthlyPayments,
+        dispensingMonthlyFunds,
+        reverseAuction,
+        completed
+    }
+
     //Errors
     error PaymentNotMeetingRequirements();
 
@@ -29,6 +38,7 @@ contract ChitFundManager {
 
     //Events
     event StrayEtherDetected(address sender, uint256 amount);
+    event FundEntered(address user);
 
     constructor(uint256 _fee, uint256 _baseMonthlyFee) {
         foreman = payable(msg.sender);
@@ -38,6 +48,7 @@ contract ChitFundManager {
 
     function enterFund() external payable valueIsGreaterThan(baseMonthlyFee) {
         map.set(msg.sender, baseMonthlyFee);
+        emit FundEntered(msg.sender);
     }
 
     /// @dev Catch stray eth transfer calls
