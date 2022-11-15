@@ -9,19 +9,14 @@ describe("unit tests", () => {
     ;[deployer] = await ethers.getSigners()
     //Deploy libraries
     const iterableMappingFactory = await ethers.getContractFactory(
-      "IterableMapping",
-      deployer
+      "IterableMapping"
     )
     this.iterableMapping = await iterableMappingFactory.deploy()
 
     //Link libraries
-    const chitFundFactory = await ethers.getContractFactory(
-      "ChitFundManager",
-      {
-        libraries: { IterableMapping: this.iterableMapping.address },
-      },
-      deployer
-    )
+    const chitFundFactory = await ethers.getContractFactory("ChitFundManager", {
+      libraries: { IterableMapping: this.iterableMapping.address },
+    })
 
     _foremanFee = 5
     _baseMonthlyFee = toWei(5)
